@@ -18,12 +18,17 @@ const Filters = () => {
 
     // fetch sizes
     const { data: dataSizes, error: sizesError } = useSWR('/sizes', fetchApi)
-    let sizes: ICategory[] = []
+    let sizes: ISize[] = []
     if (dataSizes) sizes = dataSizes.data
 
-    if (categoriesError || sizesError) return <p>Fetch Options Error</p>
+    // fetch variants
+    const { data: dataVariants, error: variantsError } = useSWR('/variants', fetchApi)
+    let variants: IVariant[] = []
+    if (dataVariants) variants = dataVariants.data
 
-    console.log('FILTER: ', { categories, sizes })
+    if (categoriesError || sizesError || variantsError) return <p>Fetch Options Error</p>
+
+    console.log('FILTER: ', { categories, sizes, variants })
 
 
 
@@ -74,7 +79,17 @@ const Filters = () => {
 
                             </select>
                         </div>
+
                         {/* VARIANT SELECT BOX */}
+                        <div>
+                            <select name="variants" id="variants" className="form uppercase text-xs mt-2 mr-2 md:text-sm md:mt-0" value={variant} onChange={() => { }}>
+                                <option value="">Colors</option>
+                                {variants && variants.map(variant => (
+                                    <option value={variant._id} key={variant._id}>{variant.name}</option>
+                                ))}
+
+                            </select>
+                        </div>
 
                         {/* SIZE SELECT BOX */}
                         <div>
