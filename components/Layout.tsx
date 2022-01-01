@@ -1,4 +1,4 @@
-import React, { useEffect, ReactChildren } from 'react'
+import React, { useEffect, ReactChild } from 'react'
 import Footer from './Footer';
 import Navbar from './Navbar/Navbar';
 import fetchApi from '../utils/fetchApi'
@@ -7,7 +7,7 @@ import { useAppDispatch } from '../redux/hooks'
 import { setCategories, setVariants, setSizes } from '../redux/slices/optionsSlice'
 
 type Props = {
-    children: ReactChildren
+    children: ReactChild
 }
 
 const Layout = ({ children }: Props) => {
