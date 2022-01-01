@@ -20,6 +20,7 @@ const connect = async () => {
                 console.log('Use Previous Connection');
                 return;
             }
+            await mongoose.disconnect();
         }
 
         // create new connection to database
@@ -33,5 +34,22 @@ const connect = async () => {
     }
 };
 
-const db = { connect };
+const disconnect = async () => {
+    try {
+        if (isConnected === 1) {
+            if (process.env.NODE_ENV === 'production') {
+                await mongoose.disconnect();
+                isConnected = 0;
+            } else {
+                console.log('Development - Not Disconnected Database');
+            }
+        }
+    } catch (error) {
+        console.log('Disconnect Error');
+        console.log(error);
+        process.exit(1);
+    }
+};
+
+const db = { connect, disconnect };
 export default db;

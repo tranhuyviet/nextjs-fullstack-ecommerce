@@ -1,8 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import db from '../utils/db'
+import useSWR from 'swr'
+import fetchApi from '../utils/fetchApi'
 
 const Home: NextPage = () => {
+  const { data, error } = useSWR('/api/categories', fetchApi)
+  console.log('Categories: ', data)
   return (
     <div>
       <Head>
@@ -16,15 +20,6 @@ const Home: NextPage = () => {
       </main>
     </div>
   )
-}
-
-export async function getServerSideProps() {
-  await db.connect()
-  return {
-    props: {
-      cac: {}
-    }
-  }
 }
 
 export default Home
