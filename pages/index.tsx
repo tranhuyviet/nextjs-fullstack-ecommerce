@@ -19,7 +19,6 @@ const Home: NextPage<{ categories: ICategory[] }> = ({ categories }) => {
       </Head>
 
       <main className='container'>
-        <h1>Hello</h1>
         <Filters />
       </main>
     </div>

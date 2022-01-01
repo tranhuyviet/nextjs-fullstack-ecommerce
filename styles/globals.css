@@ -6,7 +6,7 @@
 
 @layer components {
     .container {
-        @apply max-w-6xl mx-auto text-sm text-gray-700;
+        @apply max-w-6xl mx-auto text-sm text-gray-700 px-4;
     }
 
     .form {

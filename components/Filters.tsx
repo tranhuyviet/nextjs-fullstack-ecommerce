@@ -1,34 +1,33 @@
-import { NextPage } from 'next'
 import React, { useState } from 'react'
-import useSWR from 'swr'
-import { ICategory, ISize, IVariant, IProductFilter } from '../redux/slices/optionsSlice'
-import fetchApi from '../utils/fetchApi'
 import SearchInput from './form-element/SearchInput'
+import { useAppSelector } from '../redux/hooks'
 
 const Filters = () => {
+    const { categories, variants, sizes } = useAppSelector(state => state.options)
+
     const [category, setCategory] = useState<string>()
     const [variant, setVariant] = useState<string>()
     const [size, setSize] = useState<string>()
     const [name, setName] = useState<string>()
 
-    // fetch categories
-    const { data: dataCategories, error: categoriesError } = useSWR('/categories', fetchApi)
-    let categories: ICategory[] = []
-    if (dataCategories) categories = dataCategories.data
+    // // fetch categories
+    // const { data: dataCategories, error: categoriesError } = useSWR('/categories', fetchApi)
+    // let categories: ICategory[] = []
+    // if (dataCategories) categories = dataCategories.data
 
-    // fetch sizes
-    const { data: dataSizes, error: sizesError } = useSWR('/sizes', fetchApi)
-    let sizes: ISize[] = []
-    if (dataSizes) sizes = dataSizes.data
+    // // fetch sizes
+    // const { data: dataSizes, error: sizesError } = useSWR('/sizes', fetchApi)
+    // let sizes: ISize[] = []
+    // if (dataSizes) sizes = dataSizes.data
 
-    // fetch variants
-    const { data: dataVariants, error: variantsError } = useSWR('/variants', fetchApi)
-    let variants: IVariant[] = []
-    if (dataVariants) variants = dataVariants.data
+    // // fetch variants
+    // const { data: dataVariants, error: variantsError } = useSWR('/variants', fetchApi)
+    // let variants: IVariant[] = []
+    // if (dataVariants) variants = dataVariants.data
 
-    if (categoriesError || sizesError || variantsError) return <p>Fetch Options Error</p>
+    // if (categoriesError || sizesError || variantsError) return <p>Fetch Options Error</p>
 
-    console.log('FILTER: ', { categories, sizes, variants })
+    // console.log('FILTER: ', { categories, sizes, variants })
 
 
 

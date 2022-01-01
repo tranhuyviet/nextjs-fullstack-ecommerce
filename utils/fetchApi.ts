@@ -3,7 +3,6 @@ import db from './db';
 
 const fetchApi = async (url: string) => {
     try {
-        console.log('URL: ', url);
         const { data } = await axios.get(url);
         if (!data) throw new Error('Fetch error');
         return data;
