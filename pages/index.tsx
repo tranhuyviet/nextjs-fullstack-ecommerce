@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import db from '../utils/db'
 
 const Home: NextPage = () => {
   return (
@@ -15,6 +16,15 @@ const Home: NextPage = () => {
       </main>
     </div>
   )
+}
+
+export async function getServerSideProps() {
+  await db.connect()
+  return {
+    props: {
+      cac: {}
+    }
+  }
 }
 
 export default Home
