@@ -6,7 +6,8 @@ import axios from 'axios'
 import { Provider } from 'react-redux'
 import { store } from '../redux/store'
 
-axios.defaults.baseURL = "/api"
+axios.defaults.baseURL = "https://nextjs-fullstack-ecommerce.vercel.app/api"
+// axios.defaults.baseURL = "http://localhost:3000/api"
 axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
