@@ -6,19 +6,29 @@ import fetchApi from '../utils/fetchApi'
 import SearchInput from './form-element/SearchInput'
 
 const Filters = () => {
-    const { data: dataCategories, error } = useSWR('/categories', fetchApi)
-    let categories: ICategory[] = []
-    if (dataCategories) categories = dataCategories.data
-
-    console.log('FILTER CATEGORIES: ', categories)
-
-
     const [category, setCategory] = useState<string>()
     const [variant, setVariant] = useState<string>()
     const [size, setSize] = useState<string>()
     const [name, setName] = useState<string>()
 
-    console.log('NAME:', name)
+    // fetch categories
+    const { data: dataCategories, error: categoriesError } = useSWR('/categories', fetchApi)
+    let categories: ICategory[] = []
+    if (dataCategories) categories = dataCategories.data
+
+    // fetch sizes
+    const { data: dataSizes, error: sizesError } = useSWR('/sizes', fetchApi)
+    let sizes: ICategory[] = []
+    if (dataSizes) sizes = dataSizes.data
+
+    if (categoriesError || sizesError) return <p>Fetch Options Error</p>
+
+    console.log('FILTER: ', { categories, sizes })
+
+
+
+
+    // console.log('NAME:', name)
 
     // filter by category handler
     // const filterCategoryHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -67,7 +77,15 @@ const Filters = () => {
                         {/* VARIANT SELECT BOX */}
 
                         {/* SIZE SELECT BOX */}
+                        <div>
+                            <select name="sizes" id="sizes" className="form uppercase text-xs mt-2 md:text-sm md:mt-0" value={size} onChange={() => { }}>
+                                <option value="">Sizes</option>
+                                {sizes && sizes.map(size => (
+                                    <option value={size._id} key={size._id}>{size.name}</option>
+                                ))}
 
+                            </select>
+                        </div>
                     </div>
                 </div>
             </form>
