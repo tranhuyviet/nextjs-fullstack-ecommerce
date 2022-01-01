@@ -7,6 +7,11 @@ module.exports = {
         extend: {
             fontFamily: {
                 poppins: ['Poppins', 'sans-serif'],
+                rochester: ['Rochester', 'cursive'],
+                satisfy: ['Satisfy', 'cursive'],
+            },
+            backgroundImage: {
+                'hero-home': "url('/images/merry.webp')",
             },
         },
     },

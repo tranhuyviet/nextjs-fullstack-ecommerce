@@ -6,10 +6,10 @@ import fetchApi from '../utils/fetchApi'
 import axios from 'axios'
 import { ICategory } from '../redux/slices/optionsSlice'
 import Filters from '../components/Filters'
+import Hero from '../components/home-page/Hero'
 
-const Home: NextPage<{ categories: ICategory[] }> = ({ categories }) => {
-  // const { data, error } = useSWR('/categories', fetchApi)
-  // console.log('Categories: ', data)
+const Home: NextPage = () => {
+
   return (
     <div>
       <Head>
@@ -18,6 +18,7 @@ const Home: NextPage<{ categories: ICategory[] }> = ({ categories }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Hero />
       <main className='container'>
         <Filters />
       </main>
