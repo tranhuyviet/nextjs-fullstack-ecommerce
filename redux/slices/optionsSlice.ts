@@ -85,8 +85,6 @@ const optionsSlice = createSlice({
             if (size) size.name = action.payload.name;
         },
         setFilter: (state, action) => {
-            console.log('action payload:', action.payload);
-
             if (action.payload.category)
                 state.filter.category = action.payload.category;
             else state.filter.category = '';
@@ -98,33 +96,8 @@ const optionsSlice = createSlice({
             if (action.payload.size) state.filter.size = action.payload.size;
             else state.filter.size = '';
 
-            // action.payload.category
-            //     ? (state.filter.category = action.payload.category)
-            //     : (state.filter.category = undefined);
-
-            // action.payload.variant
-            //     ? (state.filter.variant = action.payload.variant)
-            //     : (state.filter.variant = undefined);
-
-            // action.payload.size
-            //     ? (state.filter.size = action.payload.size)
-            //     : (state.filter.size = undefined);
-
-            // if (action.payload.category === '') {
-            //     state.filter = { ...state.filter, category: '' };
-            // } else {
-            //     state.filter = {
-            //         ...state.filter,
-            //         category: action.payload.category,
-            //     };
-            // }
-            // if (action.payload.variant)
-            //     state.filter.variant = action.payload.variant;
-            // if (action.payload.size) state.filter.size = action.payload.size;
-            // else state.filter.category = '';
-            // if (action.payload.variant)
-            //     state.filter.variant = action.payload.variant;
-            // if (action.payload.size) state.filter.size = action.payload.size;
+            if (action.payload.name) state.filter.name = action.payload.name;
+            else state.filter.name = '';
         },
     },
 });

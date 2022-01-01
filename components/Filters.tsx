@@ -7,7 +7,7 @@ const Filters = () => {
     const { categories, variants, sizes, filter } = useAppSelector(state => state.options)
     const dispatch = useAppDispatch()
 
-    const [name, setName] = useState<string>()
+    const [name, setName] = useState<string>('')
 
     // filter by category handler
     const filterCategoryHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -39,7 +39,7 @@ const Filters = () => {
                 <div className="flex flex-col items-center mt-4 md:flex-row">
                     {/* INPUT SEARCH */}
                     <div className="relative h-[42px] flex-auto w-full md:flex-auto">
-                        <SearchInput onChange={(e) => setName(e.target.value)} />
+                        <SearchInput onChange={(e) => setName(e.target.value)} name={name} setName={setName} />
                     </div>
                     <div className="flex flex-wrap w-full xs:justify-between md:flex-nowrap md:w-auto md:ml-2">
                         {/* CATEGORY SELECT BOX */}
