@@ -42,10 +42,13 @@ const getAllProducts = async (
         query = { $and: arrayAND };
     }
 
-    return Product.find(query).skip(skip).limit(limit).populate(
-        //     { path: 'variants', select: 'name colorHex' },
-        { path: 'sizes', select: 'name' }
-    );
+    return Product.find(query)
+        .skip(skip)
+        .limit(limit)
+        .populate([
+            { path: 'variants', select: 'name colorHex', model: 'variants' },
+            { path: 'sizes', select: 'name', model: 'sizes' },
+        ]);
 };
 
 // calculate total number of products
