@@ -1,4 +1,6 @@
 import Product, { ProductDocument } from '../models/productModel';
+import Variant from '../models/variantModel';
+import Size from '../models/sizeModel';
 
 const save = async (product: ProductDocument): Promise<ProductDocument> => {
     return product.save();
@@ -46,8 +48,8 @@ const getAllProducts = async (
         .skip(skip)
         .limit(limit)
         .populate([
-            { path: 'variants', select: 'name colorHex', model: 'Variant' },
-            { path: 'sizes', select: 'name', model: 'Size' },
+            { path: 'variants', select: 'name colorHex', model: Variant },
+            { path: 'sizes', select: 'name', model: Size },
         ]);
 };
 
