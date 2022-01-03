@@ -11,23 +11,23 @@ const Filters = () => {
 
     // filter by category handler
     const filterCategoryHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setFilter({ ...filter, category: e.target.value }))
+        dispatch(setFilter({ ...filter, category: e.target.value, page: 1 }))
     }
 
     // filter by variant handler
     const filterVariantHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setFilter({ ...filter, variant: e.target.value }))
+        dispatch(setFilter({ ...filter, variant: e.target.value, page: 1 }))
     }
 
     // filter by size handler
     const filterSizeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setFilter({ ...filter, size: e.target.value }))
+        dispatch(setFilter({ ...filter, size: e.target.value, page: 1 }))
     }
 
     // search by product name
     const searchByNameHandler = (e: React.SyntheticEvent) => {
         e.preventDefault()
-        dispatch(setFilter({ ...filter, name }))
+        dispatch(setFilter({ ...filter, name, page: 1 }))
     }
 
     // console.log('filter', filter)
