@@ -24,7 +24,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
         // handle pagination
         const page: number = Number(req.query.page) || 1;
-        const limit: number = Number(req.query.limit) || 10;
+        const limit: number = Number(req.query.limit) || 9;
         const skip: number = (page - 1) * limit;
 
         await db.connect();
