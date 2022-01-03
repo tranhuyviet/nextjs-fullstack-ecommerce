@@ -85,6 +85,10 @@ const optionsSlice = createSlice({
             if (size) size.name = action.payload.name;
         },
         setFilter: (state, action) => {
+            state.filter.page = action.payload.page;
+
+            state.filter.limit = action.payload.limit;
+
             if (action.payload.category)
                 state.filter.category = action.payload.category;
             else state.filter.category = '';

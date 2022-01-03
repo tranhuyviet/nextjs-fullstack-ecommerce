@@ -30,7 +30,7 @@ const Filters = () => {
         dispatch(setFilter({ ...filter, name }))
     }
 
-    console.log('filter', filter)
+    // console.log('filter', filter)
 
     return (
         <section className="mt-8">

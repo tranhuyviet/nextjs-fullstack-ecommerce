@@ -7,6 +7,7 @@ import axios from 'axios'
 import { ICategory } from '../redux/slices/optionsSlice'
 import Filters from '../components/Filters'
 import Hero from '../components/home-page/Hero'
+import ProductList from '../components/home-page/ProductList'
 
 const Home: NextPage = () => {
 
@@ -21,6 +22,7 @@ const Home: NextPage = () => {
       <Hero />
       <main className='container'>
         <Filters />
+        <ProductList />
       </main>
     </div>
   )
