@@ -46,8 +46,8 @@ const getAllProducts = async (
         .skip(skip)
         .limit(limit)
         .populate([
-            { path: 'variants', select: 'name colorHex', model: 'variants' },
-            { path: 'sizes', select: 'name', model: 'sizes' },
+            { path: 'variants', select: 'name colorHex', model: 'Variant' },
+            { path: 'sizes', select: 'name', model: 'Size' },
         ]);
 };
 
