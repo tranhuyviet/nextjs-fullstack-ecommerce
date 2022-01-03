@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import ProductCard from './ProductCard';
 import useSWR from 'swr'
+import axios from 'axios'
 import ReactLoading from 'react-loading'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { setProducts } from '../../redux/slices/productSlice'
@@ -14,16 +15,22 @@ const ProductList = () => {
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.products.products)
     const { filter } = useAppSelector(state => state.options)
+    const [filterUrl, setFilterUrl] = useState('')
 
-    let filteredUrl = '/products?'
-    if (filter.page) filteredUrl = filteredUrl + '&page=' + filter.page
-    if (filter.limit) filteredUrl = filteredUrl + '&limit=' + filter.limit
-    if (filter.category) filteredUrl = filteredUrl + '&category=' + filter.category
-    if (filter.variant) filteredUrl = filteredUrl + '&variant=' + filter.variant
-    if (filter.size) filteredUrl = filteredUrl + '&size=' + filter.size
-    if (filter.name) filteredUrl = filteredUrl + '&name=' + filter.name
+    // let filteredUrl = '/products?'
+    const { data, error } = useSWR(filterUrl, fetchApi)
 
-    const { data, error } = useSWR(filteredUrl, fetchApi)
+    useEffect(() => {
+        console.log('FILTER: ', filter)
+        let filteredUrl = '/products?'
+        if (filter.page) filteredUrl = filteredUrl + '&page=' + filter.page
+        if (filter.limit) filteredUrl = filteredUrl + '&limit=' + filter.limit
+        if (filter.category) filteredUrl = filteredUrl + '&category=' + filter.category
+        if (filter.variant) filteredUrl = filteredUrl + '&variant=' + filter.variant
+        if (filter.size) filteredUrl = filteredUrl + '&size=' + filter.size
+        if (filter.name) filteredUrl = filteredUrl + '&name=' + filter.name
+        setFilterUrl(filteredUrl)
+    }, [filter])
 
     useEffect(() => {
         if (data && data.data) dispatch(setProducts(data.data))
