@@ -8,9 +8,9 @@ export interface IProduct {
     price: number;
     discount: number;
     images: string[];
-    category: string | ICategory;
-    variants: string[] | IVariant[];
-    sizes: string[] | ISize[];
+    category: ICategory;
+    variants: IVariant[];
+    sizes: ISize[];
     user: string;
     createdAt?: string;
     updateAt?: string;

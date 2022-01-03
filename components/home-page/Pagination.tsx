@@ -32,14 +32,12 @@ const Pagination = ({ total }: Props) => {
     const handleNext = () => {
         if (filter.page < numberOfPages) {
             const page = filter.page + 1
-            console.log(page)
             dispatch(setFilter({ ...filter, page }))
         }
     }
 
     // PAGE SELETED
     const handlePageSelected = (page: number) => {
-        console.log(page)
         dispatch(setFilter({ ...filter, page }))
     }
 
