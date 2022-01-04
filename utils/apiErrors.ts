@@ -13,3 +13,9 @@ export class NotFoundError extends ApiErrors {
         super(404, message, errors);
     }
 }
+
+export class BadRequestError extends ApiErrors {
+    constructor(readonly message: string = 'Bad Request', errors?: any | null) {
+        super(400, message, errors);
+    }
+}
