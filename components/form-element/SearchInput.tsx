@@ -19,20 +19,24 @@ const SearchInput = ({ onChange, name, setName, }: Props) => {
 
     return (
         <div className="relative">
-            <input type="text" placeholder="search product" className="search-input w-full form" onChange={onChange} value={name} />
-            {name && name.length > 0 &&
-                <div className="absolute right-11 top-3 cursor-pointer" onClick={clearTextHandle}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+            <input type="text" placeholder="search product" className="search-input w-full form pr-[84px]" onChange={onChange} value={name} />
+            <div className="absolute right-0 top-0 h-[42px]  flex items-center justify-between">
+                {name && name.length > 0 &&
+                    <div className="cursor-pointer flex justify-center items-center w-[42px] h-[42px] transition duration-300" onClick={clearTextHandle}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <div className="w-[1px] h-2/3 bg-gray-300 ml-[5px] mr-[5px]" />
+                    </div>
+                }
+                <div className="mr-[8px] h-[42px] flex justify-center items-center">
+                    <button className="bg-gray-700 rounded-md p-[6px]" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5  text-gray-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
                 </div>
-            }
-
-            <button className="bg-gray-700 py-[2px] px-2 absolute right-1 top-1 h-[34px] rounded-md" type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5  text-gray-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
+            </div>
         </div>
     )
 }
