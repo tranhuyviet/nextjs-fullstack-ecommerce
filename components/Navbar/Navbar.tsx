@@ -5,7 +5,7 @@ import CartMenu from './CartMenu';
 import { useAppSelector } from '../../redux/hooks'
 
 const Navbar = () => {
-    const totalItems = 0
+    const totalItems = useAppSelector(state => state.cart.totalItems)
 
     const [loginOpen, setLoginOpen] = useState(false)
     const [cartOpen, setCartOpen] = useState(false)
