@@ -1,22 +1,14 @@
 import Link from 'next/link'
 import Input from '../components/form-element/Input'
 import { useFormik } from 'formik'
-import axios from 'axios'
 import React from 'react'
 import GlobalMessage from '../components/form-element/GlobalMessage'
 
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import { login, setCheckout } from '../redux/slices/authSlice'
 import { useRouter } from 'next/router'
 
-import jwtDecode from 'jwt-decode'
-import { IUser } from '../redux/slices/authSlice'
-import mongoose from 'mongoose'
-// import redirect from '../utils/redirect'
-import cookie from 'js-cookie'
-
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
-import jwt from 'jsonwebtoken'
+import { GetServerSideProps } from 'next'
+import { getSession, signIn, useSession, getProviders, getCsrfToken } from 'next-auth/react'
 
 interface ILogin {
     email: string
@@ -25,30 +17,41 @@ interface ILogin {
 }
 
 const LoginPage = () => {
-    const isCheckout = useAppSelector(state => state.auth.isCheckout)
     const initialValues: ILogin = {
         email: '',
         password: ''
     }
-    const dispatch = useAppDispatch()
+
     const router = useRouter()
 
     const { values, handleChange, handleSubmit, errors, setErrors } = useFormik<ILogin>({ initialValues, onSubmit })
 
     async function onSubmit(values: ILogin) {
         try {
-            const { data } = await axios.post('/users/login', values)
-            const user = data.data
-            // cookie.set('ecommerceJwt', user.token, { expires: 30 })
-            dispatch(login(user))
-            if (isCheckout) {
-                router.push('/user/checkout')
-                dispatch(setCheckout(false))
-            } else {
-                router.push('/')
-            }
+            await signIn('credentials', { redirect: false, email: values.email, password: values.password })
+                .then((error: any) => {
+                    console.log('CACCCC', error)
+                    if (error) {
+                        const errors = JSON.parse(error?.error)
+                        setErrors(errors)
+                    }
+
+                    if (!error.error) router.push('/')
+                })
+
+            // router.push('/')
+
+            // const { data } = await axios.post('/users/login', values)
+            // const user = data.data
+            // dispatch(login(user))
+            // if (isCheckout) {
+            //     router.push('/user/checkout')
+            //     dispatch(setCheckout(false))
+            // } else {
+            //     router.push('/')
+            // }
         } catch (error) {
-            setErrors(error.response.data.errors)
+            setErrors(error?.response?.data?.errors)
         }
     }
 
@@ -62,7 +65,7 @@ const LoginPage = () => {
                         </svg>
                     </div>
                     <h1 className="mt-4 text-2xl font-bold tracking-wider text-center uppercase font-poppins">Login</h1>
-                    {errors.global &&
+                    {errors && errors.global &&
                         <GlobalMessage error={errors?.global} className="mt-4" />
                     }
                     <Input label="email" type="email" name="email" value={values.email} onChange={handleChange} error={errors?.email} />
@@ -82,23 +85,33 @@ const LoginPage = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    try {
-        const token = context.req.cookies.ecommerceJwt
+    const providers = await getProviders()
+    const csrfToken = await getCsrfToken(context)
+    const session = await getSession(context)
 
-        if (token && token !== 'loggedout') {
-            const user = jwt.verify(token, process.env.JWT_SECRET as string) as IUser
-            if (user && mongoose.Types.ObjectId.isValid(user._id) && !user.banned) return { redirect: { destination: '/', permanent: false } };
-        }
-
-    } catch (error) {
-        console.log(error)
-    }
+    if (session) return { redirect: { destination: '/', permanent: false } };
     return {
         props: {
-            user: {}
+            providers,
+            csrfToken
         },
     };
+    // try {
+    //     const token = context.req.cookies.ecommerceJwt
 
+    //     if (token && token !== 'loggedout') {
+    //         const user = jwt.verify(token, process.env.JWT_SECRET as string) as IUser
+    //         if (user && mongoose.Types.ObjectId.isValid(user._id) && !user.banned) return { redirect: { destination: '/', permanent: false } };
+    //     }
+
+    // } catch (error) {
+    //     console.log(error)
+    // }
+    // return {
+    //     props: {
+    //         user: {}
+    //     },
+    // };
 }
 
 export default LoginPage

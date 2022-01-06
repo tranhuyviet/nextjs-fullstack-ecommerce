@@ -1,57 +1,57 @@
-import mongoose, { Document } from 'mongoose'
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import crypto from 'crypto'
+import mongoose, { Document } from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
-const { Schema, model, models, Types } = mongoose
+const { Schema, model, models, Types } = mongoose;
 
 export interface ReturnUser {
-    _id: string
-    name: string
-    email: string
-    image?: string
-    provider: string
-    role: string
-    banned: boolean
-    token?: string
-    createdAt?: string
-    updatedAt?: string
+    _id: string;
+    name: string;
+    email: string;
+    image?: string;
+    provider: string;
+    role: string;
+    banned: boolean;
+    token?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export type Item = Document & {
-    product: string
-    quantity: number
-    variant: string
-    size: string
-}
+    product: string;
+    quantity: number;
+    variant: string;
+    size: string;
+};
 
 export type CartItems = Document & {
-    _id: string
-    payment: boolean
-    items: Item[]
-    createdAt: string
-    updatedAt: string
-}
+    _id: string;
+    payment: boolean;
+    items: Item[];
+    createdAt: string;
+    updatedAt: string;
+};
 
 export type UserDocument = Document & {
-    name: string
-    email: string
-    image?: string
-    provider: string
-    password?: string
-    role: string
-    banned: boolean
-    tokenResetPassword: string
-    carts: CartItems[]
-    createdAt: string
-    updatedAt: string
-    hashPassword: (password: string) => void
-    isValidPassword: (password: string) => boolean
-    correctPassword: (currentPass: string, inputPass: string) => boolean
-    returnAuthUser: () => ReturnUser
-    returnUser: () => ReturnUser
-    createTokenResetPassword: () => string
-}
+    name: string;
+    email: string;
+    image?: string;
+    provider: string;
+    password?: string;
+    role: string;
+    banned: boolean;
+    tokenResetPassword: string;
+    carts: CartItems[];
+    createdAt: string;
+    updatedAt: string;
+    hashPassword: (password: string) => void;
+    isValidPassword: (password: string) => boolean;
+    correctPassword: (currentPass: string, inputPass: string) => boolean;
+    returnAuthUser: () => ReturnUser;
+    returnUser: () => ReturnUser;
+    createTokenResetPassword: () => string;
+};
 
 const userSchema = new Schema(
     {
@@ -128,19 +128,19 @@ const userSchema = new Schema(
         ],
     },
     { timestamps: true }
-)
+);
 
 // function hash password before store to database
 userSchema.methods.hashPassword = function hashPassword(password) {
-    this.password = bcrypt.hashSync(password, 12)    
-}
+    this.password = bcrypt.hashSync(password, 12);
+};
 
 // function compare input password and password in db, return true if match and false if not match
 userSchema.methods.isValidPassword = function isValidPassword(
     password
 ): boolean {
-    return bcrypt.compareSync(password, this.password)
-}
+    return bcrypt.compareSync(password, this.password);
+};
 
 // function generate json web token
 userSchema.methods.generateJWT = function generateJWT() {
@@ -155,8 +155,8 @@ userSchema.methods.generateJWT = function generateJWT() {
             banned: this.banned,
         },
         process.env.JWT_SECRET as string
-    )
-}
+    );
+};
 
 // function return infomation of logged in user
 userSchema.methods.returnAuthUser = function returnAuthUser() {
@@ -169,8 +169,8 @@ userSchema.methods.returnAuthUser = function returnAuthUser() {
         role: this.role,
         banned: this.banned,
         token: this.generateJWT(),
-    }
-}
+    };
+};
 
 // this function will return infomation of user, remove password and some infomation no need to return
 userSchema.methods.returnUser = function returnUser(): ReturnUser {
@@ -183,22 +183,22 @@ userSchema.methods.returnUser = function returnUser(): ReturnUser {
         role: this.role,
         banned: this.banned,
         updatedAt: this.updatedAt,
-    }
-}
+    };
+};
 
 // create token reset password
 userSchema.methods.createTokenResetPassword =
     function createTokenResetPassword() {
-        const resetToken = crypto.randomBytes(32).toString('hex')
+        const resetToken = crypto.randomBytes(32).toString('hex');
 
         this.tokenResetPassword = crypto
             .createHash('sha256')
             .update(resetToken)
-            .digest('hex')
+            .digest('hex');
 
-        return resetToken
-    }
+        return resetToken;
+    };
 
-const User = models.users || model<UserDocument>('users', userSchema)
+const User = models.users || model<UserDocument>('users', userSchema);
 
-export default User
+export default User;
