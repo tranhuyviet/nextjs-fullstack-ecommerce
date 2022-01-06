@@ -27,4 +27,8 @@
         @apply min-w-[120px] text-base text-center py-2 px-6 shadow-md font-semibold tracking-wide  transition-all duration-300 uppercase block border border-gray-700
         bg-gray-50 text-gray-700 hover:bg-gray-200;
     }
+
+    .menuLink {
+        @apply block mt-4 text-base transition-all duration-300 hover:font-bold hover:text-gray-700;
+    }
 }
