@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import cookie from 'js-cookie'
 
 export interface ICartItem {
     _id: string;
@@ -11,11 +12,22 @@ export interface ICartItem {
     size: string;
 }
 
-const initialState = {
-    cart: <ICartItem[]>[],
+export interface ICart {
+    cart: ICartItem[],
+    totalItems: number,
+    subTotal: number
+}
+
+// const cartSaved = JSON.parse(cookie.get('ecommerceCart') as string) as ICart
+
+const initialState: ICart = {
+    cart: [],
     totalItems: 0,
-    subTotal: 0,
+    subTotal:0,
 };
+
+// const initialState = JSON.parse(cookie.get('ecommerceCart') as string) || initialStateTemp
+// console.log(JSON.parse(cookie.get('ecommerceCart') as string))
 
 function calculate(cart: ICartItem[]) {
     let totalItems = 0;
@@ -50,6 +62,7 @@ const cartSlice = createSlice({
             const cal = calculate(state.cart);
             state.totalItems = cal.totalItems;
             state.subTotal = cal.subTotal;
+            cookie.set('ecommerceCart', JSON.stringify(state), {expires: 30})
         },
         setQuantity: (state, action) => {
             const product = state.cart.find(
@@ -70,9 +83,17 @@ const cartSlice = createSlice({
             const cal = calculate(state.cart);
             state.totalItems = cal.totalItems;
             state.subTotal = cal.subTotal;
+            cookie.set('ecommerceCart', JSON.stringify(state), {expires: 30})
         },
+        initialCart: (state, action) => {
+            if(action.payload){
+                state.cart = action.payload.cart
+                state.totalItems = action.payload.totalItems
+                state.subTotal = action.payload.subTotal
+            }
+        }
     },
 });
 
-export const { addToCart, setQuantity, removeItem } = cartSlice.actions;
+export const { addToCart, setQuantity, removeItem ,initialCart} = cartSlice.actions;
 export default cartSlice.reducer;

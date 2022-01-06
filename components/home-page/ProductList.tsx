@@ -21,7 +21,7 @@ const ProductList = () => {
     const { data, error } = useSWR(filterUrl, fetchApi)
 
     useEffect(() => {
-        console.log('FILTER: ', filter)
+        // console.log('FILTER: ', filter)
         let filteredUrl = '/products?'
         if (filter.page) filteredUrl = filteredUrl + '&page=' + filter.page
         if (filter.limit) filteredUrl = filteredUrl + '&limit=' + filter.limit

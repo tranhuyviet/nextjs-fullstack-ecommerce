@@ -20,9 +20,9 @@ const Cart = () => {
                 <div className="col-span-3 md:col-span-2 border shadow-lg">
                     <h2 className="font-bold text-lg mb-4 uppercase bg-gray-700 text-white py-3 pl-4">YOUR CART ({totalItems} items)</h2>
                     {cart && cart.map(item => (
-                        <div key={item._id} className="flex flex-col mt-4 border-b p-4 last-of-type:border-b-0 last-of-type:pb-0">
+                        <div key={item._id} className="flex flex-col mt-4 border-b p-4 last-of-type:border-b-0 last-of-type:pb-0 w-full">
                             <h2 className="md:hidden text-sm text-center font-bold text truncate">{item.name}</h2>
-                            <div className="flex mt-4 md:mt-0">
+                            <div className="flex mt-4 md:mt-0 w-full">
                                 <div className="flex-none">
                                     <img src={item.image} alt={item.name} className="w-[100px]" />
                                 </div>
