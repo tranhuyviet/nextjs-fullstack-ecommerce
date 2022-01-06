@@ -4,11 +4,10 @@ import { useFormik } from 'formik'
 import React from 'react'
 import GlobalMessage from '../components/form-element/GlobalMessage'
 
-import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { useRouter } from 'next/router'
 
 import { GetServerSideProps } from 'next'
-import { getSession, signIn, useSession, getProviders, getCsrfToken } from 'next-auth/react'
+import { getSession, signIn, getProviders, getCsrfToken } from 'next-auth/react'
 
 interface ILogin {
     email: string
@@ -30,7 +29,6 @@ const LoginPage = () => {
         try {
             await signIn('credentials', { redirect: false, email: values.email, password: values.password })
                 .then((error: any) => {
-                    console.log('CACCCC', error)
                     if (error) {
                         const errors = JSON.parse(error?.error)
                         setErrors(errors)

@@ -19,7 +19,6 @@ export default NextAuth({
                 try {
                     const { data } = await axios.post('/users/login', values);
                     const user = data.data;
-                    console.log('USER', user);
                     if (user && data.status === 'success') return user;
                     return null;
                 } catch (error) {
@@ -31,6 +30,44 @@ export default NextAuth({
             },
         }),
     ],
+    callbacks: {
+        signIn: async ({ user, account }) => {
+            // console.log('SIGNIN: ', {
+            //     user,
+            //     account,
+            // });
+            user.provider = account.provider;
+
+            // console.log('USER:', user);
+
+            return true;
+        },
+        jwt: ({ token, user, account }) => {
+            // first time jwt callback is run, user object is available
+            // console.log('JWT: ', { token, user, account });
+            if (user) {
+                token._id = user._id;
+                token.role = user.role;
+                token.banned = user.banned;
+                token.token = user.token;
+                token.provider = user.provider;
+            }
+
+            return token;
+        },
+        session: ({ session, token }) => {
+            // console.log('SESSION: ', { session, token });
+            if (token) {
+                session.user._id = token._id as string;
+                session.user.role = token.role as string;
+                session.user.banned = token.banned as boolean;
+                session.user.token = token.token as string;
+                session.user.provider = token.provider as string;
+            }
+            // console.log('session:', session);
+            return session;
+        },
+    },
     secret: process.env.JWT_SECRET,
     jwt: {
         secret: process.env.JWT_SECRET,
