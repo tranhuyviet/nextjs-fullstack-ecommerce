@@ -28,7 +28,7 @@ const GlobalMessage = ({ success, error, className, link, to }: IGlobal) => {
                     </svg>
                     <div className="ml-4">
                         <p className="text-base">{success}</p>
-                        {link && <Link href={to}><a className="text-base mt-1 font-semibold block">{link}</a></Link>}
+                        {link && <Link href={to as string}><a className="text-base mt-1 font-semibold block">{link}</a></Link>}
                     </div>
                 </>
             )
