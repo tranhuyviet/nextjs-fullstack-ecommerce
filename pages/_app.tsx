@@ -9,7 +9,8 @@ import { store } from '../redux/store'
 import Layout from '../components/Layout'
 
 // axios.defaults.baseURL = "https://nextjs-fullstack-ecommerce.vercel.app/api"
-axios.defaults.baseURL = "http://localhost:3000/api"
+const url = process.env.NODE_ENV === 'production' ? 'https://nextjs-fullstack-ecommerce.vercel.app' : 'http://localhost:3000'
+axios.defaults.baseURL = url + "/api"
 // axios.defaults.baseURL = "/api"
 axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/json';
