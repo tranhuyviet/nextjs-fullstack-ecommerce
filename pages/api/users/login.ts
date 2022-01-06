@@ -1,18 +1,13 @@
 import nc from 'next-connect';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import userService from '../../../services/userService';
-import { NotFoundError, BadRequestError } from '../../../utils/apiErrors';
 import { resSuccess, resError } from '../../../utils/returnRes';
 import db from '../../../utils/db';
-import mongoose from 'mongoose';
 import { loginValidate } from '../../../utils/validate/validateUser';
 import { errorParse } from '../../../utils/errorParse';
 import { setCookie } from '../../../utils/cookies';
-import { serialize } from 'cookie';
 
 const handler = nc();
-
-const COOKIE_NAME = 'ecommerceJwt';
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
     try {

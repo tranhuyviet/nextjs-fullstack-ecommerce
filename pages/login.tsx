@@ -15,6 +15,8 @@ import mongoose from 'mongoose'
 // import redirect from '../utils/redirect'
 import cookie from 'js-cookie'
 
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+import jwt from 'jsonwebtoken'
 
 interface ILogin {
     email: string
@@ -33,11 +35,11 @@ const LoginPage = () => {
 
     const { values, handleChange, handleSubmit, errors, setErrors } = useFormik<ILogin>({ initialValues, onSubmit })
 
-    async function onSubmit(values:ILogin) {
+    async function onSubmit(values: ILogin) {
         try {
             const { data } = await axios.post('/users/login', values)
             const user = data.data
-            cookie.set('ecommerceJwt', user.token, { expires: 30 })
+            // cookie.set('ecommerceJwt', user.token, { expires: 30 })
             dispatch(login(user))
             if (isCheckout) {
                 router.push('/user/checkout')
@@ -79,23 +81,24 @@ const LoginPage = () => {
     )
 }
 
-// export async function getServerSideProps(context) {
-//     try {
-//         const token = context.req.cookies.ecommerceJwt
-//         if (token && token !== 'loggedout') {
-//             const user: IUser = jwtDecode(token)
-//             if (user && mongoose.Types.ObjectId.isValid(user._id) && !user.banned) return { redirect: { destination: '/', permanent: false } };
-//         }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    try {
+        const token = context.req.cookies.ecommerceJwt
 
-//     } catch (error) {
-//         console.log(error)
-//     }
-//     return {
-//         props: {
-//             user: {}
-//         },
-//     };
+        if (token && token !== 'loggedout') {
+            const user = jwt.verify(token, process.env.JWT_SECRET as string) as IUser
+            if (user && mongoose.Types.ObjectId.isValid(user._id) && !user.banned) return { redirect: { destination: '/', permanent: false } };
+        }
 
-// }
+    } catch (error) {
+        console.log(error)
+    }
+    return {
+        props: {
+            user: {}
+        },
+    };
+
+}
 
 export default LoginPage
