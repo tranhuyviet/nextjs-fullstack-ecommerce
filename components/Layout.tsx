@@ -6,8 +6,6 @@ import useSWR from 'swr'
 import { useAppDispatch } from '../redux/hooks'
 import { setCategories, setVariants, setSizes } from '../redux/slices/optionsSlice'
 import { initialCart } from '../redux/slices/cartSlice';
-import { updateProfile } from '../redux/slices/profileSlice';
-import { useSession } from 'next-auth/react'
 import cookie from 'js-cookie'
 
 type Props = {
