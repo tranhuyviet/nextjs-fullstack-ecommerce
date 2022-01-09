@@ -27,11 +27,11 @@ export default NextAuth({
                         values
                     );
                     const user = data.data;
-                    console.log(user);
+                    // console.log(user);
                     if (user && data.status === 'success') return user;
                     return null;
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                     console.log('ERROR LOGIN', error?.response?.data?.errors);
                     throw new Error(
                         JSON.stringify(error?.response?.data?.errors)

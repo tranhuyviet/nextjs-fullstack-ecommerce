@@ -3,46 +3,45 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import userService from '../../../services/userService';
 import { resSuccess, resError } from '../../../utils/returnRes';
 import db from '../../../utils/db';
-import { loginValidate } from '../../../utils/validate/validateUser';
+import { signupValidate } from '../../../utils/validate/validateUser';
 import { errorParse } from '../../../utils/errorParse';
+import { setCookie } from '../../../utils/cookies';
+import User, { UserDocument } from '../../../models/userModel';
 
 const handler = nc();
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        console.log('LOGIN: ', req.body);
+        console.log('SIGNUP: ', req.body);
 
         // checking validate: email, password
-        await loginValidate.validate(req.body, { abortEarly: false });
+        await signupValidate.validate(req.body, { abortEarly: false });
 
-        const { email, password } = req.body;
+        const { name, email, password } = req.body;
 
         await db.connect();
 
-        // find user by email
-        const user = await userService.findUserByEmail(email);
-
-        // check email and correct password
-        // if email or password wrong -> only return errors.global = 'Invalid credentials'
-        // not return: 'Email incorrect' or 'Password incorrect'
-        if (!user || !user.isValidPassword(password))
+        // checking email is exist -> throw error, if not -> create new user
+        const isUserExist = await userService.findUserByEmail(email);
+        if (isUserExist) {
             return resError(
                 res,
-                'Not Found Error',
+                'Bad Request Error',
                 {
-                    global: 'Invalid credentials. Please make sure you entered the correct email address and password.',
+                    global: 'This email is already taken. Please enter another email address.',
                 },
-                404
+                400
             );
+        }
 
-        // check user banned (true)
-        if (user.banned)
-            return resError(
-                res,
-                'Not Acceptable',
-                { global: 'This user is banned. Please contact to admin' },
-                406
-            );
+        // create new user
+        const user: UserDocument = new User({ name, email });
+
+        // hash password
+        user.hashPassword(password);
+
+        // save user
+        await userService.save(user);
 
         await db.disconnect();
 

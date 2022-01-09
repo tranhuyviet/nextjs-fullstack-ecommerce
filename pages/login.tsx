@@ -36,18 +36,6 @@ const LoginPage = () => {
 
                     if (!error.error) router.push('/')
                 })
-
-            // router.push('/')
-
-            // const { data } = await axios.post('/users/login', values)
-            // const user = data.data
-            // dispatch(login(user))
-            // if (isCheckout) {
-            //     router.push('/user/checkout')
-            //     dispatch(setCheckout(false))
-            // } else {
-            //     router.push('/')
-            // }
         } catch (error) {
             setErrors(error?.response?.data?.errors)
         }
@@ -94,22 +82,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             csrfToken
         },
     };
-    // try {
-    //     const token = context.req.cookies.ecommerceJwt
-
-    //     if (token && token !== 'loggedout') {
-    //         const user = jwt.verify(token, process.env.JWT_SECRET as string) as IUser
-    //         if (user && mongoose.Types.ObjectId.isValid(user._id) && !user.banned) return { redirect: { destination: '/', permanent: false } };
-    //     }
-
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // return {
-    //     props: {
-    //         user: {}
-    //     },
-    // };
 }
 
 export default LoginPage
