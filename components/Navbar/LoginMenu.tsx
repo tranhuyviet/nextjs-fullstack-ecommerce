@@ -2,10 +2,10 @@ import React from 'react'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 
-
 const LoginMenu = () => {
     const { data: session } = useSession()
     const user = session?.user
+
     // console.log('USER', user)
     const handleLogout = async () => {
         try {
@@ -31,16 +31,16 @@ const LoginMenu = () => {
                 {session && (
                     <>
                         <div className="flex items-center pb-3 border-b">
-                            <img src={user?.image || 'https://res.cloudinary.com/dzaxf70c4/image/upload/v1636489332/avatar_tcj5dx.png'} alt="avatar" className="w-[60px] h-[60px] rounded-full " />
+                            <img src={user!.image || 'https://res.cloudinary.com/dzaxf70c4/image/upload/v1636489332/avatar_tcj5dx.png'} alt="avatar" className="w-[60px] h-[60px] rounded-full " />
                             <div className="ml-3 ">
-                                <h2 className="text-base font-semibold">{user?.name}</h2>
+                                <h2 className="text-base font-semibold">{user!.name}</h2>
                                 <p className="text-gray-500">[{user?.role}]</p>
                             </div>
                         </div>
                         <div>
                             <Link href="/user/profile"><a className="menuLink">Edit Profile</a></Link>
                             <Link href="/user/change-password"><a className="menuLink">Change Password</a></Link>
-                            {user?.role === "admin" ? (
+                            {user!.role === "admin" ? (
                                 <Link href="/user/dashboard"><a className="menuLink">Dashboard</a></Link>
                             ) : null}
                         </div>

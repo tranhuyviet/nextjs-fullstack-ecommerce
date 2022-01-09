@@ -4,10 +4,10 @@ import classNames from 'classnames'
 
 type IButton = {
     title: string
-    loading: boolean
+    loading?: boolean
 }
 
-function SubmitButton({ title, loading }: IButton) {
+function SubmitButton({ title, loading = false }: IButton) {
     return (
         <button className={classNames("mt-6 btn flex justify-center items-center relative ", { 'bg-gray-400 border-gray-400 cursor-not-allowed': loading })} type='submit' disabled={loading}>
             {loading && <ReactLoading type='spinningBubbles' height={20} width={20} />}

@@ -6,6 +6,8 @@ import useSWR from 'swr'
 import { useAppDispatch } from '../redux/hooks'
 import { setCategories, setVariants, setSizes } from '../redux/slices/optionsSlice'
 import { initialCart } from '../redux/slices/cartSlice';
+import { updateProfile } from '../redux/slices/profileSlice';
+import { useSession } from 'next-auth/react'
 import cookie from 'js-cookie'
 
 type Props = {
@@ -24,10 +26,11 @@ const Layout = ({ children }: Props) => {
         if (categories) dispatch(setCategories(categories.data))
         if (variants) dispatch(setVariants(variants.data))
         if (sizes) dispatch(setSizes(sizes.data))
-        if(cart) {
+        if (cart) {
             dispatch(initialCart(cart))
         }
-    }, [categories, variants, sizes, dispatch])
+
+    }, [categories, variants, sizes, dispatch, cart])
 
     if (errorCategories || errorVariants || errorSizes) return <p>Error....</p>
     return (

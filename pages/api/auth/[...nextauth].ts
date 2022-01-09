@@ -14,21 +14,32 @@ export default NextAuth({
             credentials: {
                 email: { label: 'Email', type: 'email' },
                 password: { label: 'Password', type: 'password' },
+                user: {},
             },
             authorize: async (credentials, req) => {
                 const values = {
                     email: credentials?.email,
                     password: credentials?.password,
                 };
-                console.log('values', values);
+                // console.log('credentials', credentials);
                 try {
-                    const { data } = await axios.post(
-                        url + '/users/login',
-                        values
-                    );
-                    const user = data.data;
-                    // console.log(user);
-                    if (user && data.status === 'success') return user;
+                    // update profile
+                    if (
+                        credentials?.user &&
+                        !credentials?.email &&
+                        !credentials?.password
+                    ) {
+                        return JSON.parse(credentials.user);
+                    } else {
+                        // register or login
+                        const { data } = await axios.post(
+                            url + '/users/login',
+                            values
+                        );
+                        const user = data.data;
+                        // console.log(user);
+                        if (user && data.status === 'success') return user;
+                    }
                     return null;
                 } catch (error) {
                     // console.log(error);
@@ -42,10 +53,12 @@ export default NextAuth({
     ],
     callbacks: {
         signIn: async ({ user, account }) => {
-            // console.log('SIGNIN: ', {
-            //     user,
-            //     account,
-            // });
+            // {
+            //     console.log('SIGNIN: ', {
+            //         user,
+            //         account,
+            //     });
+            // }
             user.provider = account.provider;
 
             // console.log('USER:', user);
@@ -54,8 +67,8 @@ export default NextAuth({
         },
         jwt: ({ token, user, account }) => {
             // first time jwt callback is run, user object is available
-            // console.log('JWT: ', { token, user, account });
-            if (user) {
+            // console.log('JWT: ', { token, user });
+            if (user && (token.user = user)) {
                 token._id = user._id;
                 token.role = user.role;
                 token.banned = user.banned;

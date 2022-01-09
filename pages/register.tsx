@@ -34,7 +34,7 @@ const RegisterPage = () => {
 
     async function onSubmit(values: IRegister) {
         try {
-            console.log('VALUES: ', values)
+            // console.log('VALUES: ', values)
             setLoading(true)
             const { data } = await axios.post('/users/signup', values)
             console.log('register data: ', data)
