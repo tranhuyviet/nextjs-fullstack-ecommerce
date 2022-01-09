@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Input from '../components/form-element/Input'
 import GlobalMessage from '../components/form-element/GlobalMessage'
@@ -9,6 +9,8 @@ import { useRouter } from 'next/router'
 import { GetServerSideProps } from 'next'
 import { getSession, signIn } from 'next-auth/react'
 
+import ReactLoading from 'react-loading'
+import SubmitButton from '../components/form-element/SubmitButton'
 
 interface IRegister {
     name: string
@@ -19,6 +21,7 @@ interface IRegister {
 }
 
 const RegisterPage = () => {
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
     const initialValues: IRegister = {
         name: '',
@@ -32,6 +35,7 @@ const RegisterPage = () => {
     async function onSubmit(values: IRegister) {
         try {
             console.log('VALUES: ', values)
+            setLoading(true)
             const { data } = await axios.post('/users/signup', values)
             console.log('register data: ', data)
             if (data.status === 'success') {
@@ -45,9 +49,11 @@ const RegisterPage = () => {
                         if (!error.error) router.push('/')
                     })
             }
+            setLoading(false)
             return
         } catch (error) {
             setErrors(error?.response?.data?.errors)
+            setLoading(false)
         }
     }
 
@@ -68,8 +74,8 @@ const RegisterPage = () => {
                     <Input label="email" type="email" name="email" value={values.email} onChange={handleChange} error={errors?.email} />
                     <Input label="password" type="password" name="password" value={values.password} onChange={handleChange} error={errors?.password} />
                     <Input label="confirm password" type="password" name="confirmPassword" value={values.confirmPassword} onChange={handleChange} error={errors?.confirmPassword} />
-
-                    <button className="mt-6 btn" type="submit">REGISTER</button>
+                    <SubmitButton title="register" loading={loading} />
+                    {/* <button className="mt-6 btn flex justify-center items-center" type="submit"><ReactLoading type={'spin'} height={20} width={20} /><span className="ml-2">REGISTER</span></button> */}
                 </form>
                 <div className="h-[1px] w-[60%] bg-gray-300 mt-10 mx-auto" />
                 <div className="mt-8">

@@ -1,13 +1,14 @@
 import Link from 'next/link'
 import Input from '../components/form-element/Input'
 import { useFormik } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import GlobalMessage from '../components/form-element/GlobalMessage'
 
 import { useRouter } from 'next/router'
 
 import { GetServerSideProps } from 'next'
 import { getSession, signIn, getProviders, getCsrfToken } from 'next-auth/react'
+import SubmitButton from '../components/form-element/SubmitButton'
 
 interface ILogin {
     email: string
@@ -16,6 +17,7 @@ interface ILogin {
 }
 
 const LoginPage = () => {
+    const [loading, setLoading] = useState(false)
     const initialValues: ILogin = {
         email: '',
         password: ''
@@ -27,6 +29,7 @@ const LoginPage = () => {
 
     async function onSubmit(values: ILogin) {
         try {
+            setLoading(true)
             await signIn('credentials', { redirect: false, email: values.email, password: values.password })
                 .then((error: any) => {
                     if (error) {
@@ -36,8 +39,10 @@ const LoginPage = () => {
 
                     if (!error.error) router.push('/')
                 })
+            setLoading(false)
         } catch (error) {
             setErrors(error?.response?.data?.errors)
+            setLoading(false)
         }
     }
 
@@ -56,7 +61,7 @@ const LoginPage = () => {
                     }
                     <Input label="email" type="email" name="email" value={values.email} onChange={handleChange} error={errors?.email} />
                     <Input label="password" type="password" name="password" value={values.password} onChange={handleChange} error={errors?.password} />
-                    <button className="mt-6 btn" type="submit">LOGIN</button>
+                    <SubmitButton title='login' loading={loading} />
                     <Link href="/user/forgot-password"><a className="mt-4 text-base text-gray-700 hover:font-semibold">Forgot your password?</a></Link>
                 </form>
                 <div className="h-[1px] w-[60%] bg-gray-300 mt-10 mx-auto" />
