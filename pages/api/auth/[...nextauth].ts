@@ -2,6 +2,11 @@ import NextAuth from 'next-auth';
 import CredentialProvider from 'next-auth/providers/credentials';
 import axios from 'axios';
 
+const url =
+    process.env.NODE_ENV === 'production'
+        ? 'https://nextjs-fullstack-ecommerce.vercel.app/api'
+        : 'http://localhost:3000/api';
+
 export default NextAuth({
     providers: [
         CredentialProvider({
@@ -17,7 +22,10 @@ export default NextAuth({
                 };
                 console.log('values', values);
                 try {
-                    const { data } = await axios.post('/users/login', values);
+                    const { data } = await axios.post(
+                        url + '/users/login',
+                        values
+                    );
                     const user = data.data;
                     console.log(user);
                     if (user && data.status === 'success') return user;
